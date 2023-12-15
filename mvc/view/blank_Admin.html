@@ -1,0 +1,83 @@
+<table class="table" style="width: 100%;" id="shopping-cart-id">
+    <tr>
+        <th scope="col">Hình ảnh</th>
+        <th>Tên sản phẩm</th>
+        <th>Giá</th>
+        <th>Số lượng</th>
+        <th>Tổng tiền</th>
+    </tr>
+    <tr>
+        <td><img src="/CuaHangNoiThat/public/image/HINHANH/sofa2.jpg" alt=""></td>
+        <td>
+            <p style="margin: 0;">Sofa loại 3 (-0%)</p>
+        </td>
+        <td>
+            <div class="price">520.000&nbsp;₫ <sup>đ</sup></div>
+        </td>
+        <td><input id="number-product-item-SP46" type="number" onchange="changeNumberCart('SP46');" placeholder="1" class="number" value="1"><i class="fa fa-trash" onclick="deleteCartItem('SP46')"></i>
+            <p style="color:red;"></p>
+        </td>
+        <td scope="col">520.000&nbsp;₫</td>
+    </tr>
+    <tr>
+        <td><img src="/CuaHangNoiThat/public/image/HINHANH/sofa1.jpg" alt=""></td>
+        <td>
+            <p style="margin: 0;">Sofa loại 2 (-0%)</p>
+        </td>
+        <td>
+            <div class="price">300.000&nbsp;₫ <sup>đ</sup></div>
+        </td>
+        <td><input id="number-product-item-SP45" type="number" onchange="changeNumberCart('SP45');" placeholder="1" class="number" value="1"><i class="fa fa-trash" onclick="deleteCartItem('SP45')"></i>
+            <p style="color:red;"></p>
+        </td>
+        <td scope="col">300.000&nbsp;₫</td>
+    </tr>
+    <tr>
+        <td><img src="/CuaHangNoiThat/public/image/HINHANH/den.png" alt=""></td>
+        <td>
+            <p style="margin: 0;">Đèn đọc sách (-2%)</p>
+        </td>
+        <td>
+            <div class="price">14.700&nbsp;₫ <sup>đ</sup></div>
+            <div style="text-decoration: line-through;" class="price">15.000&nbsp;₫ <sup>đ</sup></div>
+        </td>
+        <td><input id="number-product-item-SP08" type="number" onchange="changeNumberCart('SP08');" placeholder="1" class="number" value="1"><i class="fa fa-trash" onclick="deleteCartItem('SP08')"></i>
+            <p style="color:red;"></p>
+        </td>
+        <td scope="col">14.700&nbsp;₫</td>
+    </tr>
+    <tr>
+        <td>Tổng</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="text-align: end;">
+            <div class="total-price">834.700&nbsp;₫</div>
+        </td>
+    </tr>
+    <tr>
+        <td>Khuyến mãi</td>
+        <td></td>
+        <td>5%</td>
+        <td>(2021-12-01 đến 2021-12-30)</td>
+        <td style="text-align: end;">
+            <div class="total-price">- 41.735&nbsp;₫</div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="total-price">Thành tiền</div>
+        </td>
+        <td colspan="3"></td>
+        <td style="text-align: end;">
+            <div class="total-price">792.965&nbsp;₫</div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5"></td>
+        <td>
+            <p style="font-size: 12px;">Tiền vận chuyển tính khi thanh toán</p><input type="button" onclick="orderCart();" value="ĐẶT HÀNG" class="cart-btn">
+            <p></p>
+        </td>
+    </tr>
+</table>
