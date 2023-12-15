@@ -115,6 +115,8 @@
                 url: window.location.href
             },
             success: function(data) {
+                console.log(data);
+
                 var data = JSON.parse(data);
                 $result = data.RESULT;
                 if ($result === "NOT_EXISTS") {

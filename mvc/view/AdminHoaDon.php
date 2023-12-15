@@ -263,25 +263,28 @@
             });
         });
         // Bat su kien xac nhan hoa don
-        function confirmBill($id) {
-            if(!confirm("Bạn có chăc chắn xác nhận hóa đơn này không ?")){
-                return;
-            }
-            $.ajax({
-                url: '/CuaHangNoiThat/Admin/updateBillStatus/TT06',
-                data: {
-                    'id': $id
-                },
-                method: "post",
-                success: function(result) {
-                    console.log(result);
-                    if (result == 0) {
-                        alert("Cập nhật trạng thái Hóa Đơn thành công");
-                        loadTable();
-                    }
-                }
-            });
-        }
+        function confirmBill(id) {
+  if (!confirm("Bạn có chắc chắn xác nhận hóa đơn này không?")) {
+    return;
+  }
+
+  $.ajax({
+    url: '/CuaHangNoiThat/Admin/updateBillStatus/TT06',
+    data: {
+      id: id
+    },
+    method: 'post',
+    success: function(result) {
+      if (result == 0) {
+        alert('Cập nhật trạng thái Hóa Đơn thành công');
+        loadTable();
+      }
+    },
+    error: function(error) {
+      console.error('Error occurred while confirming the bill:', error);
+    }
+  });
+}
 
         function destroyBill($id){
             if(!confirm("Bạn có chắc chắn hủy hóa đơn này không ?")){

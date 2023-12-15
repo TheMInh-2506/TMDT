@@ -314,27 +314,29 @@
 
 
 
+        async function orderCart() {
+  try {
+    const response = await $.ajax({
+      url: '/CuaHangNoiThat/Admin/orderCart/0',
+    });
 
-        function orderCart() {
-            $.ajax({
-                url: '/CuaHangNoiThat/Admin/orderCart/0',
-                success: function(data) {
-                    var data = JSON.parse(data);
-                    console.log(data);
-                    if (data.SMS == "NOT_LOGIN") {
-                        alert("Vui lòng đăng nhập để tiếp tục");
-                        window.location.href = "/CuaHangNoiThat/DangNhap?return=GioHang"
-                    } else if(data.SMS === 'Đặt hàng thành công'){
-                        alert(data.SMS);
-                        window.location.href='/CuaHangNoiThat/TrangChu';
-                    }
-                    else{
-                        alert(data.SMS);
-                    }
-                    
-                }
-            })
-        }
+    console.log(response);
+
+    const data = JSON.parse(response);
+    
+    if (data.SMS === 'NOT_LOGIN') {
+      alert('Vui lòng đăng nhập để tiếp tục');
+      window.location.href = '/CuaHangNoiThat/DangNhap?return=GioHang';
+    } else if (data.SMS === 'Đặt hàng thành công') {
+      alert(data.SMS);
+      window.location.href = '/CuaHangNoiThat/TrangChu';
+    } else {
+      alert(data.SMS);
+    }
+  } catch (error) {
+    console.error('Error occurred during the order:', error);
+  }
+}
 
         function orderCartWithPayPal(){
             $.ajax({

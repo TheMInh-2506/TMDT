@@ -16,7 +16,7 @@ class Admin extends Controller
         $result = array(
             'countProduct' => count($objProduct->getAllProduct()),
             'countBill' => count($objBill->getAllBill()),
-            'countCustomer' => count($objCustomer->getAllCustomer_Stored()),
+            'countCustomer' => count($objCustomer->getAllCustomer()),
             'countStaff' => count($objStaff->getAllStaff())
         );
 
@@ -245,7 +245,7 @@ class Admin extends Controller
     {
         $objCus = $this->getModel('KhachHangDB');
 
-        echo json_encode($objCus->getAllCustomer_Stored());
+        echo json_encode($objCus->getAllCustomer());
     }
 
     function block_unblockCutomer($id)
@@ -1317,8 +1317,6 @@ class Admin extends Controller
             //Tao hoa don
             $billQry = "INSERT INTO `hoadon`(`MAHD`,`MANV`, `MAKH`, `NGAYLAP`, `GIOLAP`, `TONG`, `MATRANGTHAI`, `MAKM`,`PAYPAL`) VALUES ('$billId',NULL,'$cusId','$day','$time',$sum,'TT01','$saleId',$pay);";
 
-            echo $billQry;
-
             //Tao chi tiet hoa don
             $detailQry = "INSERT INTO `ct_hoadon`(`MAHD`, `MASP`, `SOLUONG`, `GIA`, `PHANTRAMGIAM`) VALUES";
             foreach ($cart as $value) {
@@ -1431,29 +1429,37 @@ class Admin extends Controller
         $objCustomer = $this->getModel('NhanVienDB');
         $cus = $objCustomer->getStaffByUser($user);
         $pass = hash('md5', $pass);
-        $result = array();
+    
+        $result = [
+            'RESULT' => '',
+            'DATA' => null,
+            'RIGHT' => null
+        ];
+    
         if (empty($cus)) {
-            $result['RESULT'] = "NOT_EXISTS";
+            $result['RESULT'] = 'NOT_EXISTS';
         } else {
-            if ($pass == $cus['MATKHAU']) {
-                if (strpos($cus['QUYEN'], "e_right") === false) {
-                    $result['RESULT'] = "NOT_ADMIN";
-                    //echo $cus['QUYEN'].'<br>';
+            if ($pass === $cus['MATKHAU']) {
+                if (array_key_exists('QUYEN', $cus) && strpos($cus['QUYEN'], 'e_right') === false) {
+                    $result['RESULT'] = 'NOT_ADMIN';
                     $result['DATA'] = $cus;
                     $_SESSION['staff'] = $cus;
                 } else {
-                    $result['RESULT'] = "SUCCESS";
+                    $result['RESULT'] = 'SUCCESS';
                     $result['DATA'] = $cus;
                     $_SESSION['staff'] = $cus;
+    
                     if ($cus['TRANGTHAI'] == 0) {
-                        $result['RESULT'] = "BLOCK";
+                        $result['RESULT'] = 'BLOCK';
                     }
                 }
             } else {
-                $result['RESULT'] = "WRONG_PASSWORD";
+                $result['RESULT'] = 'WRONG_PASSWORD';
             }
         }
-        $result['RIGHT'] = $cus['QUYEN'];
+    
+        $result['RIGHT'] = isset($cus['QUYEN']) ? $cus['QUYEN'] : null;
+    
         echo json_encode($result);
     }
 
