@@ -86,7 +86,7 @@ class HoaDonDB extends ConnectionDB
     function getAllBill()
     {
         $data = array();
-        $query = "SELECT * FROM `hoadon`";
+        $query = "SELECT * FROM hoadon;";
         $rs = mysqli_query($this->conn, $query);
         while ($row = mysqli_fetch_assoc($rs)) {
             $data[] = $row;

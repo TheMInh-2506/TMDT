@@ -131,63 +131,63 @@
         $('#openExportBill').hide();
 
         function loadTable() {
-            $(document).ready(function() {
-                $.ajax({
-                    url: "/CuaHangNoiThat/Admin/getAllBill",
-                    success: function(data) {
-                        var data = JSON.parse(data);
-                        console.log(data);
-                        var xhtml = '<thead>' +
-                            '<tr>' +
-                            '<th scope="col">#</th>' +
-                            '<th scope="col">Mã Hóa Đơn</th>' +
-                            '<th scope="col">Tên Nhân Viên</th>' +
-                            '<th scope="col">Tên Khách Hàng</th>' +
-                            '<th scope="col">Ngày Lập</th>' +
-                            '<th scope="col">Giờ Lập</th>' +
-                            '<th scope="col" style="width: 5rem;">Tổng</th>' +
-                            '<th scope="col" style="width: 8rem;">Mã K.Mãi</th>' +
-                            '<th scope="col" style="width: 8rem;">Thành Tiền</th>' +
-                            '<th scope="col">Trạng Thái</th>' +
-                            '<th scope="col">Thanh toán online</th>' +
-                            '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
-                            '</tr>' +
-                            '</thead><tbody>';
-                        for (var i = 0; i < data.length; i++) {
-                            xhtml += '<tr>' +
-                                '<th scope="row">' + (i + 1) + '</th>' +
-                                '<td>' + data[i]['MAHD'] + '</td>' +
-                                '<td>('+data[i]['MANV']+')' + data[i]['TENNV'] + '</td>' +
-                                '<td>' + data[i]['TENKH'] + '</td>' +
-                                '<td>' + (data[i]['NGAYLAP']) + '</td>' +
-                                '<td>' + data[i]['GIOLAP'] + '</td>' +
-                                '<th scope="row">' + formatter.format(data[i]['TONG']) + '</th>' +
-                                '<td>' + data[i]['MAKM'] + ' (' + data[i]['PHANTRAMGIAM'] + '%)</td>' +
-                                '<th scope="row">' + formatter.format(data[i]['TONG'] * (1 - (data[i]['PHANTRAMGIAM'] / 100))) + '</th>' +
-                                '<td>' + data[i]['MOTATRANGTHAI'] + '</td>' +
-                                '<td>' + (data[i]['PAYPAL']==1 ? 'Có':'Không') + '</td>' +
-                                '<td>';
-                            if (data[i].MATRANGTHAI == 'TT01') {
-                                xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Xác nhận hóa đơn</button>';
-                                xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';
-                            }
-                            else if(data[i].MATRANGTHAI == 'TT02'){
-                                xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';                               
-                            }
+    $(document).ready(function() {
+        $.ajax({
+            url: "/CuaHangNoiThat/Admin/getAllBill",
+            success: function(data) {
+                var data = JSON.parse(data);
+                var xhtml = '<thead>' +
+                    '<tr>' +
+                    '<th scope="col">#</th>' +
+                    '<th scope="col">Mã Hóa Đơn</th>' +
+                    '<th scope="col">Tên Nhân Viên</th>' +
+                    '<th scope="col">Tên Khách Hàng</th>' +
+                    '<th scope="col">Ngày Lập</th>' +
+                    '<th scope="col">Giờ Lập</th>' +
+                    '<th scope="col" style="width: 5rem;">Tổng</th>' +
+                    '<th scope="col" style="width: 8rem;">Mã K.Mãi</th>' +
+                    '<th scope="col" style="width: 8rem;">Thành Tiền</th>' +
+                    '<th scope="col">Trạng Thái</th>' +
+                    '<th scope="col">Thanh toán online</th>' +
+                    '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
+                    '</tr>' +
+                    '</thead><tbody>';
+                for (var i = 0; i < data.length; i++) {
+                    xhtml += '<tr>' +
+                        '<th scope="row">' + (i + 1) + '</th>' +
+                        '<td>' + data[i]['MAHD'] + '</td>' +
+                        '<td>(' + data[i]['MANV'] + ')' + data[i]['TENNV'] + '</td>' +
+                        '<td>' + data[i]['TENKH'] + '</td>' +
+                        '<td>' + data[i]['NGAYLAP'] + '</td>' +
+                        '<td>' + data[i]['GIOLAP'] + '</td>' +
+                        '<th scope="row">' + formatter.format(data[i]['TONG']) + '</th>' +
+                        '<td>' + data[i]['MAKM'] + ' (' + data[i]['PHANTRAMGIAM'] + '%)</td>' +
+                        '<th scope="row">' + formatter.format(data[i]['TONG'] * (1 - (data[i]['PHANTRAMGIAM'] / 100))) + '</th>' +
+                        '<td>' + data[i]['MOTATRANGTHAI'] + '</td>' +
+                        '<td>' + (data[i]['PAYPAL'] == 1 ? 'Có' : 'Không') + '</td>' +
+                        '<td>';
 
-                            xhtml += '<button  onclick="viewBillDetail(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In hóa đơn</button>' +
-                                '<a href="/CuaHangNoiThat/Admin/XemChiTietHD/' + data[i].MAHD + '">' +
-                                '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Xem chi tiết</button>' +
-                                '</a>' +
-                                '</td>' +
-                                '</tr>';
-                        }
-                        xhtml += '</tbody>';
-                        document.getElementById('tableContent').innerHTML = xhtml;
+                    if (data[i]['MATRANGTHAI'] == 'TT01') {
+                        xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Xác nhận hóa đơn</button>';
+                        xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';
+                    } else if (data[i]['MATRANGTHAI'] == 'TT02') {
+                        xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';
                     }
-                });
-            });
-        }
+
+                    xhtml += '<button onclick="viewBillDetail(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In hóa đơn</button>' +
+                        '<a href="/CuaHangNoiThat/Admin/XemChiTietHD/' + data[i].MAHD + '">' +
+                        '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Xem chi tiết</button>' +
+                        '</a>' +
+                        '</td>' +
+                        '</tr>';
+                }
+
+                xhtml += '</tbody>';
+                $('#tableContent').html(xhtml);
+            }
+        });
+    });
+}
         loadTable();
         //Bat su kien tim kiem san pham tren thanh tim kiem
         $(document).ready(function() {

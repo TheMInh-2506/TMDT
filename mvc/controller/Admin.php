@@ -16,7 +16,7 @@ class Admin extends Controller
         $result = array(
             'countProduct' => count($objProduct->getAllProduct()),
             'countBill' => count($objBill->getAllBill()),
-            'countCustomer' => count($objCustomer->getAllCustomer()),
+            'countCustomer' => count($objCustomer->getAllCustomer_Stored()),
             'countStaff' => count($objStaff->getAllStaff())
         );
 
@@ -53,30 +53,31 @@ class Admin extends Controller
         require_once('./menuadmin.php');
         $this->View('AdminTimKiemHoaDon', 'Tìm kiếm hóa đơn');
     }
-
     function getAllBill()
-{
-    $obj = $this->getModel('HoaDonDB');
-    $objStatus = $this->getModel('TrangThaiDB');
-    $objStaff = $this->getModel('NhanVienDB');
-    $objCustomer = $this->getModel('KhachHangDB');
-    $objSale = $this->getModel('KhuyenMaiDB');
-
-    $data = $obj->getAllBill();
-    foreach ($data as $key => $value) {
-        $staff = $objStaff->getStaffById($value['MANV']);
-        $exStaff = $objStaff->getStaffById($value['MANV_XUAT']);
-        $status = $value['MATRANGTHAI'];
-        $customer = $objCustomer->getCutomerById($value['MAKH']);
-        $data[$key]['MOTATRANGTHAI'] = $objStatus->getStatusNameById($status)['MOTATRANGTHAI'];
-        $data[$key]['TENNV'] = $staff['TENNV'];
-        $data[$key]['TENNV_XUAT'] = $exStaff['TENNV'];
-        $data[$key]['TENKH'] = $customer['TENKH'];
-        $data[$key]['PHANTRAMGIAM'] = $objSale->getSaleById($value['MAKM'])['PHANTRAMGIAM'];
+    {
+        $obj = $this->getModel('HoaDonDB');
+        $objStatus = $this->getModel('TrangThaiDB');
+        $objStaff = $this->getModel('NhanVienDB');
+        $objCustomer = $this->getModel('KhachHangDB');
+        $objSale = $this->getModel('KhuyenMaiDB');
+    
+        $data = $obj->getAllBIll();
+    
+        foreach ($data as $key => $value) {
+            $staff = $objStaff->getStaffById($value['MANV']);
+            $exStaff = $objStaff->getStaffById($value['MANV']);
+            $status = $value['MATRANGTHAI'];
+            $customer = $objCustomer->getCutomerById($value['MAKH']);
+    
+            $data[$key]['MOTATRANGTHAI'] = isset($objStatus->getStatusNameById($status)['MOTATRANGTHAI']) ? $objStatus->getStatusNameById($status)['MOTATRANGTHAI'] : null;
+            $data[$key]['TENNV'] = isset($staff['TENNV']) ? $staff['TENNV'] : null;
+            $data[$key]['TENNV_XUAT'] = isset($exStaff['TENNV']) ? $exStaff['TENNV'] : null;
+            $data[$key]['TENKH'] = isset($customer['TENKH']) ? $customer['TENKH'] : null;
+            $data[$key]['PHANTRAMGIAM'] = isset($objSale->getSaleById($value['MAKM'])['PHANTRAMGIAM']) ? $objSale->getSaleById($value['MAKM'])['PHANTRAMGIAM'] : null;
+        }
+    
+        echo json_encode($data);
     }
-
-    echo json_encode($data);
-}
 
     function getBillAndDetail()
     {
@@ -1435,8 +1436,9 @@ class Admin extends Controller
             $result['RESULT'] = "NOT_EXISTS";
         } else {
             if ($pass == $cus['MATKHAU']) {
-                if (!isset($cus['MAQUYEN']) || $cus['MAQUYEN'] !== '1') {
+                if (strpos($cus['QUYEN'], "e_right") === false) {
                     $result['RESULT'] = "NOT_ADMIN";
+                    //echo $cus['QUYEN'].'<br>';
                     $result['DATA'] = $cus;
                     $_SESSION['staff'] = $cus;
                 } else {
@@ -1451,7 +1453,7 @@ class Admin extends Controller
                 $result['RESULT'] = "WRONG_PASSWORD";
             }
         }
-        $result['RIGHT'] = isset($cus['MAQUYEN']) ? $cus['MAQUYEN'] : null;
+        $result['RIGHT'] = $cus['QUYEN'];
         echo json_encode($result);
     }
 
